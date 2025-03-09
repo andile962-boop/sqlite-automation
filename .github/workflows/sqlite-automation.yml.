@@ -1,1 +1,31 @@
+name: SQLite Database Automation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SQLite
+      run: |
+        sudo apt-get update
+        sudo apt-get install sqlite3
+
+    - name: Run SQL Script to Create Database and Table
+      run: |
+        sqlite3 AutoTest.db < create_db.sql
+
+    - name: Verify Database
+      run: |
+        sqlite3 AutoTest.db "SELECT * FROM user;"
 
